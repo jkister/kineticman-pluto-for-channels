@@ -20,6 +20,11 @@ try:
 except:
     port = 7777
 
+try:
+    channel_start = int(os.environ.get("START", 0))
+except:
+    channel_start = 0
+
 # Get Username and Password from environment variables
 pluto_username = os.environ.get("PLUTO_USERNAME")
 pluto_password = os.environ.get("PLUTO_PASSWORD")
@@ -213,7 +218,7 @@ def playlist(provider, country_code):
         else:
             m3u += f"#EXTINF:-1 channel-id=\"{provider}-{s.get('slug')}\""
         m3u += f" tvg-id=\"{s.get('id')}\""
-        m3u += f" tvg-chno=\"{''.join(map(str, str(s.get('number', []))))}\"" if s.get('number') else ""
+        m3u += f" tvg-chno=\"{''.join(map(str, str(s.get('number', []) + channel_start)))}\"" if s.get('number') else ""
         m3u += f" group-title=\"{''.join(map(str, s.get('group', [])))}\"" if s.get('group') else ""
         m3u += f" tvg-logo=\"{''.join(map(str, s.get('logo', [])))}\"" if s.get('logo') else ""
         m3u += f" tvg-name=\"{''.join(map(str, s.get('tmsid', [])))}\"" if s.get('tmsid') else ""
